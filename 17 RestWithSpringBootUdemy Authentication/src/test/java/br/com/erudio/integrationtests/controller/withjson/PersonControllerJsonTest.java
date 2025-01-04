@@ -46,7 +46,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest{
 	@Test
 	@Order(0)
 	public void authorization() throws JsonMappingException, JsonProcessingException {
-		AccountCredentialsVO user = new AccountCredentialsVO("marcos", "admin123");
+		AccountCredentialsVO user = new AccountCredentialsVO("leandro", "teste123");
 		
 		var accessToken = given()
 			.basePath("auth/signin")
