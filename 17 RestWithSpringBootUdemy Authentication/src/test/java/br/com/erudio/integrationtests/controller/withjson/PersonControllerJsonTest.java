@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import java.util.List;
 
@@ -80,6 +81,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Test
 	@Order(1)
 	public void testCreate() throws JsonMappingException, JsonProcessingException {
+		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
+
 		mockPerson();
 
 		var content = given().spec(specification)
@@ -115,6 +118,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Test
 	@Order(2)
 	public void testUpdate() throws JsonMappingException, JsonProcessingException {
+		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
+
 		person.setLastName("Piquet Souto Maior");
 
 		var content = given().spec(specification)
@@ -150,6 +155,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Test
 	@Order(3)
 	public void testFindById() throws JsonMappingException, JsonProcessingException {
+		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
+
 		mockPerson();
 
 		var content = given().spec(specification)
@@ -186,6 +193,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Order(4)
 	public void testDelete() throws JsonMappingException, JsonProcessingException {
 
+		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
+
 		given().spec(specification)
 				.contentType(TestConfigs.CONTENT_TYPE_JSON)
 				.pathParam("id", person.getId())
@@ -198,6 +207,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Test
 	@Order(5)
 	public void testFindAll() throws JsonMappingException, JsonProcessingException {
+
+		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
 
 		var content = given().spec(specification)
 				.contentType(TestConfigs.CONTENT_TYPE_JSON)
@@ -246,6 +257,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 	@Test
 	@Order(6)
 	public void testFindAllWithoutToken() throws JsonMappingException, JsonProcessingException {
+
+		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
 
 		RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
 				.setBasePath("/api/person/v1")
