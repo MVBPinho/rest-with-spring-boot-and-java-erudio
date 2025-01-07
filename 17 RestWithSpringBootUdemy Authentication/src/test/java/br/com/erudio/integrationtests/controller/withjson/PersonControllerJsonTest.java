@@ -32,7 +32,7 @@ import io.restassured.filter.log.RequestLoggingFilter;
 import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.specification.RequestSpecification;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,properties = {"server.port=8888"})
 @TestMethodOrder(OrderAnnotation.class)
 public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
@@ -57,7 +57,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		var accessToken = given()
 				.basePath("/auth/signin")
-				.port(TestConfigs.SERVER_PORT_YML)
+				.port(TestConfigs.SERVER_PORT)
 				.contentType(TestConfigs.CONTENT_TYPE_JSON)
 				.body(user)
 				.when()
@@ -72,7 +72,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		specification = new RequestSpecBuilder()
 				.addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
 				.setBasePath("/api/person/v1")
-				.setPort(TestConfigs.SERVER_PORT_YML)
+				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
 				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
 				.build();
@@ -262,7 +262,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
 				.setBasePath("/api/person/v1")
-				.setPort(TestConfigs.SERVER_PORT_YML)
+				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
 				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
 				.build();

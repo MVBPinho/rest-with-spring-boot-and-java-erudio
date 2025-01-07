@@ -28,7 +28,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,properties = {"server.port=8888"})
 @TestMethodOrder(OrderAnnotation.class)
 public class AuthControllerYamlTest extends AbstractIntegrationTest {
 
@@ -91,7 +91,7 @@ public class AuthControllerYamlTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .accept(TestConfigs.CONTENT_TYPE_YML)
                 .basePath("/auth/signin")
-                .port(TestConfigs.SERVER_PORT_YML)
+                .port(TestConfigs.SERVER_PORT)
                 .contentType(TestConfigs.CONTENT_TYPE_YML)
                 .body(user, objectMapper)
                 .when()
@@ -120,7 +120,7 @@ public class AuthControllerYamlTest extends AbstractIntegrationTest {
                                                 ContentType.TEXT)))
                 .accept(TestConfigs.CONTENT_TYPE_YML)
                 .basePath("/auth/refresh")
-                .port(TestConfigs.SERVER_PORT_YML)
+                .port(TestConfigs.SERVER_PORT)
                 .contentType(TestConfigs.CONTENT_TYPE_YML)
                 .pathParam("username", tokenVO.getUsername())
                 .header(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + tokenVO.getRefreshToken())

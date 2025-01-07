@@ -33,7 +33,7 @@ import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,properties = {"server.port=8888"})
 @TestMethodOrder(OrderAnnotation.class)
 public class PersonControllerYamlTest extends AbstractIntegrationTest {
 
@@ -63,7 +63,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 												TestConfigs.CONTENT_TYPE_YML,
 												ContentType.TEXT)))
 				.basePath("/auth/signin")
-				.port(TestConfigs.SERVER_PORT_YML)
+				.port(TestConfigs.SERVER_PORT)
 				.contentType(TestConfigs.CONTENT_TYPE_YML)
 				.accept(TestConfigs.CONTENT_TYPE_YML)
 				.body(user, objectMapper)
@@ -79,7 +79,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 		specification = new RequestSpecBuilder()
 				.addHeader(TestConfigs.HEADER_PARAM_AUTHORIZATION, "Bearer " + accessToken)
 				.setBasePath("/api/person/v1")
-				.setPort(TestConfigs.SERVER_PORT_YML)
+				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
 				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
 				.build();
@@ -294,7 +294,7 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 
 		RequestSpecification specificationWithoutToken = new RequestSpecBuilder()
 				.setBasePath("/api/person/v1")
-				.setPort(TestConfigs.SERVER_PORT_YML)
+				.setPort(TestConfigs.SERVER_PORT)
 				.addFilter(new RequestLoggingFilter(LogDetail.ALL))
 				.addFilter(new ResponseLoggingFilter(LogDetail.ALL))
 				.build();
