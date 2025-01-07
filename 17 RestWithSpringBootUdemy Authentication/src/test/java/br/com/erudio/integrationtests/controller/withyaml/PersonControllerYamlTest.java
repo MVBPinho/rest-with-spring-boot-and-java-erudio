@@ -268,23 +268,23 @@ public class PersonControllerYamlTest extends AbstractIntegrationTest {
 
 		assertEquals("Ayrton", foundPersonOne.getFirstName());
 		assertEquals("Senna", foundPersonOne.getLastName());
-		assertEquals("São Paulo", foundPersonOne.getAddress());
+		assertEquals("São Paulo - SP", foundPersonOne.getAddress());
 		assertEquals("Male", foundPersonOne.getGender());
 
-		PersonVO foundPersonSix = people.get(2);
+		PersonVO foundPersonFour = people.get(3);
 
-		assertNotNull(foundPersonSix.getId());
-		assertNotNull(foundPersonSix.getFirstName());
-		assertNotNull(foundPersonSix.getLastName());
-		assertNotNull(foundPersonSix.getAddress());
-		assertNotNull(foundPersonSix.getGender());
+		assertNotNull(foundPersonFour.getId());
+		assertNotNull(foundPersonFour.getFirstName());
+		assertNotNull(foundPersonFour.getLastName());
+		assertNotNull(foundPersonFour.getAddress());
+		assertNotNull(foundPersonFour.getGender());
 
-		assertEquals(7, foundPersonSix.getId());
+		assertEquals(5, foundPersonFour.getId());
 
-		assertEquals("Muhammad", foundPersonSix.getFirstName());
-		assertEquals("Alai", foundPersonSix.getLastName());
-		assertEquals("Kentucky - US", foundPersonSix.getAddress());
-		assertEquals("Male", foundPersonSix.getGender());
+		assertEquals("Mahatma", foundPersonFour.getFirstName());
+		assertEquals("Gandhi", foundPersonFour.getLastName());
+		assertEquals("Porbandar - India", foundPersonFour.getAddress());
+		assertEquals("Male", foundPersonFour.getGender());
 	}
 
 
