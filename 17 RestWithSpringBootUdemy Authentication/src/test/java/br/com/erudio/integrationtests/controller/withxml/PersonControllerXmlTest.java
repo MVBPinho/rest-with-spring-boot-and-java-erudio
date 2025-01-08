@@ -104,6 +104,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertNotNull(persistedPerson.getLastName());
 		assertNotNull(persistedPerson.getAddress());
 		assertNotNull(persistedPerson.getGender());
+		assertTrue(persistedPerson.getEnabled());
 
 		assertTrue(persistedPerson.getId() > 0);
 
@@ -142,6 +143,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertNotNull(persistedPerson.getLastName());
 		assertNotNull(persistedPerson.getAddress());
 		assertNotNull(persistedPerson.getGender());
+		assertTrue(persistedPerson.getEnabled());
 
 		assertEquals(person.getId(), persistedPerson.getId());
 
@@ -153,6 +155,43 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 
 	@Test
 	@Order(3)
+	public void testDisablePersonById() throws JsonMappingException, JsonProcessingException {
+		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
+
+		var content = given().spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_XML)
+				.accept(TestConfigs.CONTENT_TYPE_XML)
+				.pathParam("id", person.getId())
+				.when()
+				.patch("{id}")
+				.then()
+				.statusCode(200)
+				.extract()
+				.body()
+				.asString();
+
+		PersonVO persistedPerson = xmlMapper.readValue(content, PersonVO.class);
+		person = persistedPerson;
+
+		assertNotNull(persistedPerson);
+
+		assertNotNull(persistedPerson.getId());
+		assertNotNull(persistedPerson.getFirstName());
+		assertNotNull(persistedPerson.getLastName());
+		assertNotNull(persistedPerson.getAddress());
+		assertNotNull(persistedPerson.getGender());
+		assertFalse(persistedPerson.getEnabled());
+
+		assertEquals(person.getId(), persistedPerson.getId());
+
+		assertEquals("Nelson", persistedPerson.getFirstName());
+		assertEquals("Piquet Souto Maior", persistedPerson.getLastName());
+		assertEquals("Brasília - DF - Brasil", persistedPerson.getAddress());
+		assertEquals("Male", persistedPerson.getGender());
+	}
+
+	@Test
+	@Order(4)
 	public void testFindById() throws JsonMappingException, JsonProcessingException {
 		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
 
@@ -180,6 +219,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertNotNull(persistedPerson.getLastName());
 		assertNotNull(persistedPerson.getAddress());
 		assertNotNull(persistedPerson.getGender());
+		assertFalse(persistedPerson.getEnabled());
 
 		assertEquals(person.getId(), persistedPerson.getId());
 
@@ -190,7 +230,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	@Order(4)
+	@Order(5)
 	public void testDelete() throws JsonMappingException, JsonProcessingException {
 
 		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
@@ -206,7 +246,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 	}
 
 	@Test
-	@Order(5)
+	@Order(6)
 	public void testFindAll() throws JsonMappingException, JsonProcessingException {
 
 		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
@@ -231,6 +271,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertNotNull(foundPersonOne.getLastName());
 		assertNotNull(foundPersonOne.getAddress());
 		assertNotNull(foundPersonOne.getGender());
+		assertTrue(foundPersonOne.getEnabled());
 
 		assertEquals(1, foundPersonOne.getId());
 
@@ -246,6 +287,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 		assertNotNull(foundPersonTwo.getLastName());
 		assertNotNull(foundPersonTwo.getAddress());
 		assertNotNull(foundPersonTwo.getGender());
+		assertTrue(foundPersonTwo.getEnabled());
 
 		assertEquals(2, foundPersonTwo.getId());
 
@@ -257,7 +299,7 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 
 
 	@Test
-	@Order(6)
+	@Order(7)
 	public void testFindAllWithoutToken() throws JsonMappingException, JsonProcessingException {
 
 		assumeTrue(specification != null, "specification não foi inicializado. Execute os testes juntos.");
@@ -283,5 +325,6 @@ public class PersonControllerXmlTest extends AbstractIntegrationTest {
 		person.setLastName("Piquet");
 		person.setAddress("Brasília - DF - Brasil");
 		person.setGender("Male");
+		person.setEnabled(true);
 	}
 }
