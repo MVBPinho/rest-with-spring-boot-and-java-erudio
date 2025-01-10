@@ -22,7 +22,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/book/v1",
+							"raw": "{{url}}/api/book/v1?page=1&size=3&direction=asc",
 							"host": [
 								"{{url}}"
 							],
@@ -30,6 +30,20 @@
 								"api",
 								"book",
 								"v1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								},
+								{
+									"key": "direction",
+									"value": "asc"
+								}
 							]
 						}
 					},
