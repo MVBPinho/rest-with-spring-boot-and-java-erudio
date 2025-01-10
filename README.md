@@ -180,3 +180,5 @@ Content-Type: application/json
 ## Monitoramento:
 - Implemente mecanismos de monitoramento para identificar e resolver problemas de desempenho em tempo real.
 
+## Site para emular mocks (sql, planilha e etc)
+- https://www.mockaroo.com/
