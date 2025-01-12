@@ -1,11 +1,20 @@
 package br.com.erudio.integrationtests.controller.withjson;
 
-import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
-import java.util.List;
-
+import br.com.erudio.configs.TestConfigs;
+import br.com.erudio.data.vo.v1.security.TokenVO;
+import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
+import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
+import br.com.erudio.integrationtests.vo.PersonVO;
+import br.com.erudio.integrationtests.vo.wrappers.WrapperPersonVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.filter.log.LogDetail;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
+import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import org.junit.jupiter.api.Order;
@@ -13,22 +22,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import br.com.erudio.configs.TestConfigs;
-import br.com.erudio.data.vo.v1.security.TokenVO;
-import br.com.erudio.integrationtests.testcontainers.AbstractIntegrationTest;
-import br.com.erudio.integrationtests.vo.AccountCredentialsVO;
-import br.com.erudio.integrationtests.vo.PersonVO;
-import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.filter.log.LogDetail;
-import io.restassured.filter.log.RequestLoggingFilter;
-import io.restassured.filter.log.ResponseLoggingFilter;
-import io.restassured.specification.RequestSpecification;
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT,properties = {"server.port=8888"})
 @TestMethodOrder(OrderAnnotation.class)
@@ -248,6 +244,7 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 
 		var content = given().spec(specification)
 				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.queryParams("page", 3, "size", 10, "direction", "asc")
 				.when()
 				.get()
 				.then()
@@ -256,7 +253,8 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 				.body()
 				.asString();
 
-		List<PersonVO> people = objectMapper.readValue(content, new TypeReference<List<PersonVO>>() {});
+		WrapperPersonVO wrapper = objectMapper.readValue(content, WrapperPersonVO.class);
+		var people = wrapper.getEmbedded().getPersons();
 
 		PersonVO foundPersonOne = people.get(0);
 
@@ -267,11 +265,11 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		assertNotNull(foundPersonOne.getGender());
 		assertTrue(foundPersonOne.getEnabled());
 
-		assertEquals(1, foundPersonOne.getId());
+		assertEquals(677, foundPersonOne.getId());
 
-		assertEquals("Ayrton", foundPersonOne.getFirstName());
-		assertEquals("Senna", foundPersonOne.getLastName());
-		assertEquals("São Paulo - SP", foundPersonOne.getAddress());
+		assertEquals("Alic", foundPersonOne.getFirstName());
+		assertEquals("Terbrug", foundPersonOne.getLastName());
+		assertEquals("3 Eagle Crest Court", foundPersonOne.getAddress());
 		assertEquals("Male", foundPersonOne.getGender());
 
 		PersonVO foundPersonSix = people.get(5);
@@ -283,12 +281,12 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 		assertNotNull(foundPersonSix.getGender());
 		assertTrue(foundPersonSix.getEnabled());
 
-		assertEquals(7, foundPersonSix.getId());
+		assertEquals(911, foundPersonSix.getId());
 
-		assertEquals("Muhammad", foundPersonSix.getFirstName());
-		assertEquals("Ali", foundPersonSix.getLastName());
-		assertEquals("Kentucky - US", foundPersonSix.getAddress());
-		assertEquals("Male", foundPersonSix.getGender());
+		assertEquals("Allegra", foundPersonSix.getFirstName());
+		assertEquals("Dome", foundPersonSix.getLastName());
+		assertEquals("57 Roxbury Pass", foundPersonSix.getAddress());
+		assertEquals("Female", foundPersonSix.getGender());
 	}
 
 
