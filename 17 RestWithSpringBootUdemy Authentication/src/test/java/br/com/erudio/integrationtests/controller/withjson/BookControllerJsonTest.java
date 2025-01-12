@@ -23,6 +23,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -211,6 +212,50 @@ public class BookControllerJsonTest extends AbstractIntegrationTest {
         assertEquals("Domain Driven Design", foundBookFive.getTitle());
         assertEquals("Eric Evans", foundBookFive.getAuthor());
         assertEquals(92.0, foundBookFive.getPrice());
+    }
+
+    @Test
+    @Order(9)
+    public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
+
+        var content = given().spec(specification)
+                .contentType(TestConfigs.CONTENT_TYPE_JSON)
+                .queryParams("page", 0 , "limit", 10, "direction", "asc")
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .extract()
+                .body()
+                .asString();
+
+        String baseUrl = "http://localhost:8888/api/book/v1";
+
+        String[] bookLinks = {
+                "/12",
+                "/3",
+                "/5"
+        };
+
+        for (String bookLink : bookLinks) {
+            assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"" + baseUrl + bookLink + "\"}}}"),
+                    "HATEOAS link for book " + bookLink + " is missing or incorrect.");
+        }
+
+        Map<String, String> paginationLinks = Map.of(
+                "first", "?direction=asc&page=0&size=12&sort=title,asc",
+                "self", "?page=0&size=12&direction=asc",
+                "next", "?direction=asc&page=1&size=12&sort=title,asc",
+                "last", "?direction=asc&page=1&size=12&sort=title,asc"
+        );
+
+        for (Map.Entry<String, String> link : paginationLinks.entrySet()) {
+            assertTrue(content.contains("\"" + link.getKey() + "\":{\"href\":\"" + baseUrl + link.getValue() + "\"}"),
+                    "HATEOAS link for " + link.getKey() + " is missing or incorrect.");
+        }
+
+        String pageInfo = "\"page\":{\"size\":12,\"totalElements\":15,\"totalPages\":2,\"number\":0}}";
+        assertTrue(content.contains(pageInfo), "Page information is missing or incorrect.");
     }
 
     private void mockBook() {

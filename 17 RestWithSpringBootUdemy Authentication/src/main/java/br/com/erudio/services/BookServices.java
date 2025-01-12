@@ -40,7 +40,7 @@ public class BookServices {
 		var bookVosPages = bookPage.map(p -> DozerMapper.parseObject(p, BookVO.class));
 		bookVosPages.map(p -> p.add(linkTo(methodOn(BookController.class).findById(p.getKey())).withSelfRel()));
 
-		Link link = linkTo(methodOn(PersonController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
+		Link link = linkTo(methodOn(BookController.class).findAll(pageable.getPageNumber(), pageable.getPageSize(), "asc")).withSelfRel();
 
 		return assembler.toModel(bookVosPages, link);
 	}
