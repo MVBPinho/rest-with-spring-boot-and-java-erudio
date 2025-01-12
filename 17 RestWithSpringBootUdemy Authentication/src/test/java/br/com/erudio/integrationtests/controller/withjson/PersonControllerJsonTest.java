@@ -21,6 +21,10 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Links;
+
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
@@ -347,6 +351,54 @@ public class PersonControllerJsonTest extends AbstractIntegrationTest {
 				.then()
 				.statusCode(403);
 	}
+
+	@Test
+	@Order(9)
+	public void testHATEOAS() throws JsonMappingException, JsonProcessingException {
+
+		var content = given()
+				.spec(specification)
+				.contentType(TestConfigs.CONTENT_TYPE_JSON)
+				.accept(TestConfigs.CONTENT_TYPE_JSON)
+				.queryParams("page", 3, "size", 10, "direction", "asc")
+				.when()
+				.get()
+				.then()
+				.statusCode(200)
+				.extract()
+				.body()
+				.asString();
+
+		String baseUrl = "http://localhost:8888/api/person/v1";
+		
+		String[] personLinks = {
+				"/677",
+				"/846",
+				"/714"
+		};
+
+		for (String personLink : personLinks) {
+			assertTrue(content.contains("\"_links\":{\"self\":{\"href\":\"" + baseUrl + personLink + "\"}}}"),
+					"HATEOAS link for person " + personLink + " is missing or incorrect.");
+		}
+
+		Map<String, String> paginationLinks = Map.of(
+				"first", "?direction=asc&page=0&size=10&sort=firstName,asc",
+				"prev", "?direction=asc&page=2&size=10&sort=firstName,asc",
+				"self", "?page=3&size=10&direction=asc",
+				"next", "?direction=asc&page=4&size=10&sort=firstName,asc",
+				"last", "?direction=asc&page=100&size=10&sort=firstName,asc"
+		);
+
+		for (Map.Entry<String, String> link : paginationLinks.entrySet()) {
+			assertTrue(content.contains("\"" + link.getKey() + "\":{\"href\":\"" + baseUrl + link.getValue() + "\"}"),
+					"HATEOAS link for " + link.getKey() + " is missing or incorrect.");
+		}
+
+		String pageInfo = "\"page\":{\"size\":10,\"totalElements\":1008,\"totalPages\":101,\"number\":3}}";
+		assertTrue(content.contains(pageInfo), "Page information is missing or incorrect.");
+	}
+
 
 	private void mockPerson() {
 		person.setFirstName("Nelson");
