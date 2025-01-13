@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "Books",
+			"name": "Book",
 			"item": [
 				{
 					"name": "Finds all Books",
@@ -19,10 +19,15 @@
 								"key": "Authorization",
 								"value": "Bearer {{accessToken}}",
 								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/xml",
+								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/book/v1?page=1&size=3&direction=asc",
+							"raw": "{{url}}/api/book/v1?page=0&size=10&direction=asc",
 							"host": [
 								"{{url}}"
 							],
@@ -34,11 +39,11 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "1"
+									"value": "0"
 								},
 								{
 									"key": "size",
-									"value": "3"
+									"value": "10"
 								},
 								{
 									"key": "direction",
@@ -267,7 +272,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{url}}/api/person/v1/findPersonByName/ar?page=0&size=10&direction=asc",
+							"raw": "{{url}}/api/person/v1/findPersonByName/ayr?page=0&size=10&direction=asc",
 							"host": [
 								"{{url}}"
 							],
@@ -276,7 +281,7 @@
 								"person",
 								"v1",
 								"findPersonByName",
-								"ar"
+								"ayr"
 							],
 							"query": [
 								{
@@ -431,6 +436,54 @@
 								"person",
 								"v1",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File",
+			"item": [
+				{
+					"name": "Upload file",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/TestUpload/Travelin--Band-CCR-Playlist-Cover.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/file/v1/uploadFile",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"file",
+								"v1",
+								"uploadFile"
 							]
 						}
 					},
