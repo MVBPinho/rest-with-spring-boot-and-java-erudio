@@ -182,3 +182,6 @@ Content-Type: application/json
 
 ## Site para emular mocks (sql, planilha e etc)
 - https://www.mockaroo.com/
+
+## Site para converter (xml, json..) em java
+- https://json2csharp.com/
