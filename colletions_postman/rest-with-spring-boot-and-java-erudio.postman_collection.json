@@ -488,6 +488,87 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Upload multiple files",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "files",
+									"type": "file",
+									"src": "/C:/Users/Vitória/Documents/Imagem do WhatsApp de 2025-01-02 à(s) 19.01.08_4e1f5e0a.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/file/v1/uploadMultipleFiles",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"file",
+								"v1",
+								"uploadMultipleFiles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a File",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Origin",
+								"value": "http://localhost:8080"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{accessToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/api/file/v1/downloadFile/Imagem%20do%20WhatsApp%20de%202025-01-02%20%C3%A0(s)%2019.01.08_4e1f5e0a.jpg",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"file",
+								"v1",
+								"downloadFile",
+								"Imagem%20do%20WhatsApp%20de%202025-01-02%20%C3%A0(s)%2019.01.08_4e1f5e0a.jpg"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
