@@ -1,3 +1,6 @@
+# Docker Hub
+https://hub.docker.com/repository/docker/mpinho/rest-with-spring-boot-erudio/general
+
 # O que são Webservices?
 - Webservices são sistemas de software que facilitam a comunicação entre diferentes aplicativos em uma rede, como a Internet. Eles utilizam padrões abertos, como XML e SOAP, para trocar dados de maneira padronizada. Existem tipos comuns, como SOAP e REST, cada um com suas características. Webservices são essenciais para a interoperabilidade em ambientes distribuídos, permitindo que sistemas heterogêneos se comuniquem eficientemente.
 
